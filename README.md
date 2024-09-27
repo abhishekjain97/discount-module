@@ -22,16 +22,10 @@ This endpoint applies the discount rules based on the provided query parameters.
 
 # Assumption
 
-1. If the current booking is for a family member and the same item has already been booked for another family member, the family discount should be applied.
-
-2. If the current booking is for the user and the user has previously booked the same schedule, the recurring discount should be applied.
-
-## How to Use
-
-### Use Cases
-
 - **Family Member Discounts:** Implement a discount rule that applies a discount if any family member has previously purchased the same schedule.
 - **Recurring Discounts:** When a user is booking a schedule that they have previously booked, then a recurring discount applies.
+
+## How to Use
 
 
 1. **Construct the Request:**
