@@ -174,8 +174,6 @@ public function applyFamilyMemberDiscount($userId, $scheduleId, $total)
                         ->get();
 
     if(count($bookings) > 0) {
-        // If NO then check the if we already booked the same schedule in past
-        // If YES then apply the discoun dased on discount type
         if($this->checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId)) {
             return $this->calulateDiscount($total);   
         }
@@ -193,6 +191,7 @@ This method checks if any other family member has booked the same schedule. If y
 public function checkIfAlreadyBookedTheSameScheduleItem($bookings, $scheduleId)
 {
     foreach($bookings as $booking) {
+        // check if the current schedules id are available in the booking or not
         if(in_array($booking->schedule_id, $scheduleId)) {
             return true;
         }
@@ -234,10 +233,16 @@ This method calculates the discount based on the type (`fixed` or `percentage`) 
 ```php
 public function calculateDiscount($total)
 {
+    // Check if the discount type is fixed then apply fixed discount logic
+    // else apply the percentage based discount
+
     if($this->discountData->discount_type == 'fixed') {
         return $this->discountData->discount_value;
     } else {
         $amount = ($total * $this->discountData->discount_value) / 100;
+
+        // If the discount price less then the max discount price, return calculated discount amount
+        // Else return the max discount price
 
         if($amount <= $this->discountData->max_discount_amount) {
             return round($amount);

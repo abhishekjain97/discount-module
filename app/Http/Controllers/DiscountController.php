@@ -37,7 +37,7 @@ class DiscountController extends Controller
             }
 
 
-            // Get a discount baed on discount id and check is this discount is available or not
+            // Get a discount based on discount id and check is this discount available or not
             $this->discountData = Discount::where('id', $discount_id)->where('user_left' ,'>', 0)->first();
 
             if (!$this->discountData) {
@@ -63,13 +63,13 @@ class DiscountController extends Controller
                 'status' => true,
                 'message' => 'Discount apply successfully',
                 'discount' => $discount
-            ], 201);
+            ], 200);
 
         } catch (Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => 'An error occurred while applying the discount.',
-                'error' => $e->getMessage(), // You can include the error message for debugging, but avoid exposing sensitive data
+                'error' => $e->getMessage(),
                 'discount' => 0
             ], 500);
         }
@@ -87,8 +87,6 @@ class DiscountController extends Controller
                             ->get();
 
         if(count($bookings) > 0) {
-            // If NO then check the if we already booked the same schedule in past
-            // If YES then apply the discoun dased on discount type
             if($this->checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId)) {
                 return $this->calulateDiscount($total);   
             }
@@ -105,9 +103,8 @@ class DiscountController extends Controller
     */
     public function checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId) {
         foreach($bookings as $booking) {
+            // check if the current schedules id are available in the booking or not
             if(in_array($booking->schedule_id, $scheduleId)) {
-                // If we find the schedule id 
-                // Which means user previously complete there booking for the current schedules
                 return true;
             }
         }
@@ -129,7 +126,6 @@ class DiscountController extends Controller
      
         // If user booking exist then we check if the user booked for same schedule or not 
         if(count($bookings) > 0) {
-
             if($this->checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId)) {
                 return $this->calulateDiscount($total);   
             }
@@ -150,7 +146,7 @@ class DiscountController extends Controller
         } else {
             $amount = ($total * $this->discountData->discount_value) / 100;
 
-            // If the discount price less then the max discount price, return discount amount
+            // If the discount price less then the max discount price, return calculated discount amount
             // Else return the max discount price
             if($amount <= $this->discountData->max_discount_amount) {
                 return round($amount);
