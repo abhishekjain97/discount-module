@@ -204,7 +204,7 @@ public function checkIfAlreadyBookedTheSameScheduleItem($bookings, $scheduleId)
 
 ## Recurring Discount
 
-Implement a discount rule for recurring bookings. When an attendee books the same schedule or subscription again, the discount is applied automatically.
+Implement a discount rule for recurring bookings. When an user books the same schedule or subscription again, the discount is applied automatically.
 
 This method calculates a discount for recurring bookings if the user has previously booked the same schedule.
 
@@ -249,18 +249,3 @@ public function calculateDiscount($total)
     return 0;
 }
 ```
-
-## How it Works
-
-### Family Discount
-
-1. Check if the discount is applicable.
-2. Fetch booking data from the `bookings` table using `user_id` and join it with `booking_items`.
-3. Check if the current item has already been booked for another family member.
-   - If yes, calculate the discount based on the discount type.
-
-### Recurring Discount
-
-1. Fetch booking data from the `bookings` table based on `user_id` and join it with `booking_items`.
-2. Check if the user has already booked the same schedule.
-   - If yes, calculate the discount based on the discount type.
