@@ -1,3 +1,27 @@
+# Installation
+
+1. Clone teh repo
+    ```
+    git clone https://github.com/abhishekjain97/discount-module.git
+    ```
+2. Install Composer package
+    ```
+    composer install
+    ```
+3. Copy the environment file & edit it accordingly
+    ```
+    cp .env.example .env
+    ```
+4. Create Database then migrate and seed
+    ```
+    php artisan migrate --seed
+    ```
+5. Serve the application
+    ```
+    php artisan serve
+    ```
+
+
 # API Documentation: Apply Discount
 
 ## Overview
