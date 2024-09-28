@@ -258,3 +258,25 @@ public function calculateDiscount($total)
     return 0;
 }
 ```
+
+
+### How it Works!
+
+
+
+**Family Discount:**
+
+1. First, we check if the discount is applicable or not. If the requested discount limit has been reached, the discount is not applicable—whether it is a family discount or a recurring discount.
+2. Then, we fetch the booking data from the `bookings` and `booking_items` tables based on the `user_id`, `schedule_id` (booking item), and `for_member` being true.
+3. If we retrieve the booking data, this means the user has already completed a booking for the same booking item for other family members.
+4. After this, we run the `calculateDiscount()` function to calculate the discount based on the discount type.
+
+**Recurring Discount:**
+
+1. We fetch the booking data from the `bookings` and `booking_items` tables based on the `user_id`, `schedule_id` (booking item), and `for_member` being false.
+2. If we retrieve the booking data, this means the user has already completed a booking for the same item.
+3. Then, we run the `calculateDiscount()` function to calculate the discount based on the discount type.
+
+---
+
+Let me know if you'd like further modifications!
