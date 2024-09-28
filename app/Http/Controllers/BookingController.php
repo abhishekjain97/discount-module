@@ -57,11 +57,13 @@ class BookingController extends Controller
             }
         }
 
-        // Update user left for discount count based on discount type
-        $discount = Discount::where('id', $request->discount_id)->firstOrFail();
-        $discount->update([
-            'user_left'  =>  $discount->user_left - 1
-        ]);
+        if($request->discount > 0) {
+            // Update user left for discount count based on discount type
+            $discount = Discount::where('id', $request->discount_id)->firstOrFail();
+            $discount->update([
+                'user_left'  =>  $discount->user_left - 1
+            ]);
+        }
 
         return response()->json([
             'status' => true,
