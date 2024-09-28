@@ -258,7 +258,7 @@ public function calculateDiscount($total)
     return 0;
 }
 ```
-
+---
 
 ### How it Works!
 
@@ -277,6 +277,4 @@ public function calculateDiscount($total)
 2. If we retrieve the booking data, this means the user has already completed a booking for the same item.
 3. Then, we run the `calculateDiscount()` function to calculate the discount based on the discount type.
 
----
 
-Let me know if you'd like further modifications!
