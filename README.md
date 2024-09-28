@@ -1,6 +1,6 @@
 # Installation
 
-1. Clone teh repo
+1. Clone the repo
     ```
     git clone https://github.com/abhishekjain97/discount-module.git
     ```
@@ -192,10 +192,11 @@ This method calculates a discount for a family member if they have not already b
 public function applyFamilyMemberDiscount($userId, $scheduleId, $total)
 {
     $bookings = Booking::join('booking_items', 'bookings.id', '=', 'booking_items.booking_id')
-                        ->where('bookings.user_id', $userId)
-                        ->where('bookings.for_member', 1)
-                        ->select('bookings.*', 'booking_items.*')
-                        ->get();
+                    ->where('bookings.user_id', $userId)
+                    ->where('bookings.for_member', 1)
+                    ->whereIn('booking_items.schedule_id', $scheduleId)
+                    ->select('booking_items.schedule_id')
+                    ->get();
 
     if(count($bookings) > 0) {
         if($this->checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId)) {
@@ -237,7 +238,8 @@ public function applyRecurringDiscount($userId, $scheduleId, $total)
     $bookings = Booking::join('booking_items', 'bookings.id', '=', 'booking_items.booking_id')
                         ->where('bookings.user_id', $userId)
                         ->where('bookings.for_member', 0)
-                        ->select('bookings.*', 'booking_items.*')
+                        ->whereIn('booking_items.schedule_id', $scheduleId)
+                        ->select('booking_items.schedule_id')
                         ->get();
 
     if(count($bookings) > 0) {

@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`bookings` (
   `id` INT NOT NULL,
   `user_id` INT NULL,
   `for_member` TINYINT NULL DEFAULT 0,
+  `member_id` INT NULL,
   `booking_date` DATE NULL,
   `total_amount` DECIMAL(10,2) NULL,
   `discount` DECIMAL(10,2) NULL,
@@ -103,12 +104,13 @@ CREATE TABLE IF NOT EXISTS `mydb`.`bookings` (
   `updated_at` DATETIME NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_user_id_idx` (`user_id` ASC) VISIBLE,
+  INDEX `for_member_idx` (`for_member` ASC) VISIBLE,
   CONSTRAINT `fk_user_id`
     FOREIGN KEY (`user_id`)
     REFERENCES `mydb`.`users` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
 ```
 
 ### Fields

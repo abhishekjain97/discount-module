@@ -21,7 +21,7 @@ class DiscountController extends Controller
     {
         try {
             $userId = $request->user_id;
-            $for_family_member = $request->for_family_member;
+            $for_family_member = $request->for_family_member; // 0 and 1
             $scheduleId = is_array($request->schedule_id) ? $request->schedule_id : json_decode($request->schedule_id, true);
             $discount_id = $request->discount_id;
             $total = $request->total;
@@ -80,10 +80,13 @@ class DiscountController extends Controller
     */
     public function applyFamilyMemberDiscount($userId, $scheduleId, $total)
     {
+        $array = implode(",", $scheduleId);
+
         $bookings = Booking::join('booking_items', 'bookings.id', '=', 'booking_items.booking_id')
                             ->where('bookings.user_id', $userId)
                             ->where('bookings.for_member', 1)
-                            ->select('bookings.*', 'booking_items.*')
+                            ->whereIn('booking_items.schedule_id', $scheduleId)
+                            ->select('booking_items.schedule_id')
                             ->get();
 
         if(count($bookings) > 0) {
@@ -121,7 +124,8 @@ class DiscountController extends Controller
         $bookings = Booking::join('booking_items', 'bookings.id', '=', 'booking_items.booking_id')
                             ->where('bookings.user_id', $userId)
                             ->where('bookings.for_member', 0)
-                            ->select('bookings.*', 'booking_items.*')
+                            ->whereIn('booking_items.schedule_id', $scheduleId)
+                            ->select('booking_items.schedule_id')
                             ->get();
      
         // If user booking exist then we check if the user booked for same schedule or not 
