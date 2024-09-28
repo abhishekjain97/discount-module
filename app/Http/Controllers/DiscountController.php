@@ -80,8 +80,6 @@ class DiscountController extends Controller
     */
     public function applyFamilyMemberDiscount($userId, $scheduleId, $total)
     {
-        $array = implode(",", $scheduleId);
-
         $bookings = Booking::join('booking_items', 'bookings.id', '=', 'booking_items.booking_id')
                             ->where('bookings.user_id', $userId)
                             ->where('bookings.for_member', 1)
@@ -90,31 +88,13 @@ class DiscountController extends Controller
                             ->get();
 
         if(count($bookings) > 0) {
-            if($this->checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId)) {
-                return $this->calulateDiscount($total);   
-            }
+            return $this->calulateDiscount($total);   
         } 
         
         return 0;
     }
 
     
-
-    /* 
-        This method checks if any other family member has booked the same schedule. 
-        If yes, the member is eligible for a discount.
-    */
-    public function checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId) {
-        foreach($bookings as $booking) {
-            // check if the current schedules id are available in the booking or not
-            if(in_array($booking->schedule_id, $scheduleId)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /* 
         This method calculates a discount for recurring bookings if the user has previously booked the same schedule.
     */
@@ -130,9 +110,7 @@ class DiscountController extends Controller
      
         // If user booking exist then we check if the user booked for same schedule or not 
         if(count($bookings) > 0) {
-            if($this->checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId)) {
-                return $this->calulateDiscount($total);   
-            }
+            return $this->calulateDiscount($total);   
         }
         return 0;
     }

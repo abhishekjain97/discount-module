@@ -199,30 +199,10 @@ public function applyFamilyMemberDiscount($userId, $scheduleId, $total)
                     ->get();
 
     if(count($bookings) > 0) {
-        if($this->checkIfAlreadyBookdTheSameScheduleItem($bookings, $scheduleId)) {
-            return $this->calulateDiscount($total);   
-        }
+        return $this->calulateDiscount($total);   
     } 
     
     return 0;
-}
-```
-
-### Check if the Same Schedule is Already Booked
-
-This method checks if any other family member has booked the same schedule. If yes, the member is eligible for a discount.
-
-```php
-public function checkIfAlreadyBookedTheSameScheduleItem($bookings, $scheduleId)
-{
-    foreach($bookings as $booking) {
-        // check if the current schedules id are available in the booking or not
-        if(in_array($booking->schedule_id, $scheduleId)) {
-            return true;
-        }
-    }
-
-    return false;
 }
 ```
 
@@ -243,9 +223,7 @@ public function applyRecurringDiscount($userId, $scheduleId, $total)
                         ->get();
 
     if(count($bookings) > 0) {
-        if($this->checkIfAlreadyBookedTheSameScheduleItem($bookings, $scheduleId)) {
-            return $this->calculateDiscount($total);  
-        }
+        return $this->calculateDiscount($total);  
     }
 
     return 0;
